@@ -12,3 +12,9 @@ services:
       - POSTGRES_PASSWORD=dbpass
     command: postgres -c 'max_connections=10000'
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    command: --requirepass redis
+
