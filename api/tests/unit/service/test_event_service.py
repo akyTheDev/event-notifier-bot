@@ -101,10 +101,8 @@ class TestGetEvent:
 
         result = await event_service.get_events(
             session=db_session,
-            dates=[
-                date(2025,1,1),
-                date(2025,1,2)
-            ]
+            start_date=date(2025,1,1),
+            end_date=date(2025,1,2)
         )
 
         assert len(result) == 2
@@ -122,10 +120,8 @@ class TestGetEvent:
 
         result = await event_service.get_events(
             session=db_session,
-            dates=[
-                date(2025,1,2),
-                date(2025,1,3)
-            ],
+            start_date=date(2025,1,2),
+            end_date=date(2025,1,3),
             userIds=[
                 'user1',
                 "user3"

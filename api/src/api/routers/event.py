@@ -43,12 +43,9 @@ class GetEventsDependencies(BaseModel):
         Query(default=None, description="List of user IDs to filter events by")
     )
 
-    dates: list[date] | None = Field(
-        Query(
-            default=None,
-            description="List of dates (in YYYY-MM-DD format) to filter events by",
-        )
-    )
+    start_date: date|None = Field(Query(default=None, description="Start date to filter."))
+
+    end_date: date|None = Field(Query(default=None, description="End date to filter."))
 
 
 @event_router.get(
@@ -59,7 +56,10 @@ async def get_events(
 ):
     """Get events by filtering the given params."""
     result = await event_service.get_events(
-        session=session, userIds=params.userIds, dates=params.dates
+        session=session,
+        userIds=params.userIds,
+        start_date=params.start_date,
+        end_date=params.end_date,
     )
 
     return ORJSONResponse(content=jsonable_encoder(result), status_code=200)

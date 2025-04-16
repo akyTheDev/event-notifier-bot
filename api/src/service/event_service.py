@@ -45,14 +45,16 @@ class EventService:
         self,
         session: InstanceOf[AsyncSession],
         userIds: list[str] | None = None,
-        dates: list[date] | None = None,
+        start_date: date | None = None,
+        end_date: date | None = None,
     ) -> list[Event]:
         """Get events from the database.
 
         Arguments:
             session: The database session to connect to db.
             userIds: The user ids array to filter the db.
-            dates: The dates array to filter db.
+            start_date: Start date to filter the db.
+            end_date: Start end to filter the db.
 
         Returns:
             The events of the given params.
@@ -65,8 +67,8 @@ class EventService:
         if userIds:
             query = query.where(Event.userId.in_(userIds))
 
-        if dates:
-            query = query.where(Event.date.in_(dates))
+        if start_date and end_date:
+            query = query.where(Event.date.between(start_date, end_date))
 
         result: list[Event] = list((await session.execute(query)).scalars().all())
 
